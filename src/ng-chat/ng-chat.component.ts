@@ -1,7 +1,14 @@
 import { HttpClient } from "@angular/common/http";
 import {
-  Component, EventEmitter, HostListener, Input,
-  OnInit, Output, QueryList, ViewChildren, ViewEncapsulation
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChildren,
+  ViewEncapsulation,
 } from "@angular/core";
 import { map } from "rxjs/operators";
 import { NgChatWindowComponent } from "./components/ng-chat-window/ng-chat-window.component";
@@ -25,8 +32,7 @@ import { ScrollDirection } from "./core/scroll-direction.enum";
 import { Theme } from "./core/theme.enum";
 import { User } from "./core/user";
 import { Window } from "./core/window";
-import generateMessageId from './utils/generateMessageId';
-
+import generateMessageId from "./utils/generateMessageId";
 
 @Component({
   selector: "ng-chat",
@@ -891,7 +897,12 @@ export class NgChat implements OnInit, IChatController {
         (item) => item.id === message.id
       );
       if (messageToUpdate) {
-        messageToUpdate.status = message.status;
+        if (
+          messageToUpdate.status !== "undelivered" ||
+          (messageToUpdate.status === "undelivered" &&
+            message.status !== "sent")
+        )
+          messageToUpdate.status = message.status;
       }
     }
   }
