@@ -530,7 +530,9 @@ export class NgChat implements OnInit, IChatController {
       this.assertMessageType(message);
 
       if (!chatWindow[1] || !this.historyEnabled) {
-        chatWindow[0].messages.push(message);
+        if(!this.isMessageAlreadyOnChat(chatWindow[0].messages, message)) {
+          chatWindow[0].messages.push(message);
+        }
 
         this.scrollChatWindow(chatWindow[0], ScrollDirection.Bottom);
 
@@ -553,6 +555,10 @@ export class NgChat implements OnInit, IChatController {
         this.emitBrowserNotification(chatWindow[0], message);
       }
     }
+  }
+
+  private isMessageAlreadyOnChat(messages: Message[], messageTeCheck: Message){
+    return messages.find(item => item.id === messageTeCheck.id);
   }
 
   onParticipantClickedFromFriendsList(participant: IChatParticipant): void {
